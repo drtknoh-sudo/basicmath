@@ -1,15 +1,6 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/authStore';
+import { Outlet, Link } from 'react-router-dom';
 
 export default function Layout() {
-  const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <nav className="bg-white shadow-sm">
@@ -32,30 +23,12 @@ export default function Layout() {
                 >
                   학습하기
                 </Link>
-                <Link
-                  to="/wrong-answers"
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900"
-                >
-                  오답노트
-                </Link>
-                <Link
-                  to="/achievements"
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900"
-                >
-                  성취도
-                </Link>
               </div>
             </div>
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-4">
-                {user?.name} ({user?.grade}학년)
+              <span className="text-sm text-gray-700">
+                초등 수학 학습 (데모)
               </span>
-              <button
-                onClick={handleLogout}
-                className="text-sm font-medium text-gray-500 hover:text-gray-900"
-              >
-                로그아웃
-              </button>
             </div>
           </div>
         </div>

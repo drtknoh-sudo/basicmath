@@ -1,144 +1,63 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { apiClient } from '../api/client';
-import { Stats } from '../types';
 
 export default function Dashboard() {
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
-    try {
-      const response = await apiClient.get('/achievements/stats');
-      setStats(response.data);
-    } catch (error) {
-      console.error('Failed to fetch stats:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <div className="text-center py-12">로딩 중...</div>;
-  }
-
   return (
     <div className="px-4 py-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">대시보드</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">초등 수학 학습</h1>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">전체 정확도</dt>
-            <dd className="mt-1 text-3xl font-semibold text-primary-600">
-              {stats?.overallAccuracy.toFixed(1)}%
-            </dd>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">풀이한 문제</dt>
-            <dd className="mt-1 text-3xl font-semibold text-gray-900">
-              {stats?.totalAttempts}개
-            </dd>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">학습 시간</dt>
-            <dd className="mt-1 text-3xl font-semibold text-gray-900">
-              {Math.floor((stats?.totalLearningTime || 0) / 60)}분
-            </dd>
-          </div>
-        </div>
-
-        <div className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <dt className="text-sm font-medium text-gray-500 truncate">완료한 단원</dt>
-            <dd className="mt-1 text-3xl font-semibold text-gray-900">
-              {stats?.completedUnits}개
-            </dd>
-          </div>
+      <div className="bg-white shadow rounded-lg p-8 mb-8">
+        <h2 className="text-2xl font-semibold text-gray-900 mb-4">환영합니다!</h2>
+        <p className="text-gray-600 mb-6">
+          2022 개정 교육과정을 반영한 초등학생 수학 학습 플랫폼입니다.
+          학년별, 단원별로 체계적인 학습을 시작하세요.
+        </p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>데모 버전:</strong> 이 버전은 프론트엔드만 배포된 데모입니다.
+            완전한 기능을 사용하려면 백엔드 서버가 필요합니다.
+          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-8">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">오답 현황</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">전체 오답</span>
-              <span className="font-semibold">{stats?.totalWrongAnswers}개</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">마스터한 오답</span>
-              <span className="font-semibold text-green-600">{stats?.masteredWrongAnswers}개</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">복습 필요</span>
-              <span className="font-semibold text-orange-600">
-                {(stats?.totalWrongAnswers || 0) - (stats?.masteredWrongAnswers || 0)}개
-              </span>
-            </div>
+      <div className="bg-white shadow rounded-lg p-6 mb-8">
+        <h2 className="text-xl font-medium text-gray-900 mb-4">주요 기능</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">📚 학년별/단원별 학습</h3>
+            <p className="text-sm text-gray-600">1-6학년 전 학년 교육과정 지원</p>
           </div>
-          <Link
-            to="/wrong-answers"
-            className="mt-4 block w-full text-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700"
-          >
-            오답노트 보기
-          </Link>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">최근 활동</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">최근 7일 문제 풀이</span>
-              <span className="font-semibold">{stats?.recentAttempts}개</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">정답률</span>
-              <span className="font-semibold text-green-600">
-                {stats?.correctAttempts}/{stats?.totalAttempts}
-              </span>
-            </div>
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">💡 개념 학습</h3>
+            <p className="text-sm text-gray-600">핵심 개념과 예제 문제 제공</p>
           </div>
-          <Link
-            to="/achievements"
-            className="mt-4 block w-full text-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
-          >
-            성취도 분석 보기
-          </Link>
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">✏️ 문제 풀이</h3>
+            <p className="text-sm text-gray-600">난이도별 다양한 유형의 문제</p>
+          </div>
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="font-semibold text-gray-900 mb-2">📊 성취도 분석</h3>
+            <p className="text-sm text-gray-600">학습 진도와 취약점 분석</p>
+          </div>
         </div>
       </div>
 
       <div className="bg-white shadow rounded-lg p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">빠른 시작</h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <h2 className="text-lg font-medium text-gray-900 mb-4">학습 시작하기</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Link
             to="/units"
-            className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            className="flex items-center justify-center px-6 py-4 border-2 border-primary-600 rounded-lg shadow-sm text-lg font-medium text-primary-600 bg-white hover:bg-primary-50 transition-colors"
           >
-            새로운 단원 학습하기
+            📖 단원 선택하기
           </Link>
-          <Link
-            to="/wrong-answers"
-            className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+          <a
+            href="https://github.com/drtknoh-sudo/basicmath"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center px-6 py-4 border-2 border-gray-300 rounded-lg shadow-sm text-lg font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
           >
-            오답 복습하기
-          </Link>
-          <Link
-            to="/achievements"
-            className="flex items-center justify-center px-4 py-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-          >
-            성취도 확인하기
-          </Link>
+            💻 GitHub 저장소
+          </a>
         </div>
       </div>
     </div>
