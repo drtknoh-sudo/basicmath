@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// 샘플 단원 데이터
+// 샘플 단원 데이터 (백엔드 연결 시 API에서 로드됨)
 const SAMPLE_UNITS = [
   {
     id: '1',
@@ -23,6 +23,24 @@ const SAMPLE_UNITS = [
   },
   {
     id: '3',
+    grade: 2,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 1,
+    unitName: '세 자리 수',
+    description: '세 자리 수를 이해하고 읽고 쓸 수 있습니다.',
+  },
+  {
+    id: '4',
+    grade: 2,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 2,
+    unitName: '덧셈과 뺄셈',
+    description: '두 자리 수의 덧셈과 뺄셈을 할 수 있습니다.',
+  },
+  {
+    id: '5',
     grade: 3,
     semester: 1,
     category: '수와 연산',
@@ -31,13 +49,67 @@ const SAMPLE_UNITS = [
     description: '세 자리 수의 덧셈과 뺄셈을 할 수 있습니다.',
   },
   {
-    id: '4',
+    id: '6',
     grade: 3,
     semester: 1,
     category: '도형과 측정',
     unitNumber: 2,
     unitName: '평면도형',
     description: '여러 가지 평면도형의 특징을 이해할 수 있습니다.',
+  },
+  {
+    id: '7',
+    grade: 4,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 1,
+    unitName: '큰 수',
+    description: '다섯 자리 이상의 큰 수를 이해하고 활용할 수 있습니다.',
+  },
+  {
+    id: '8',
+    grade: 4,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 2,
+    unitName: '곱셈과 나눗셈',
+    description: '세 자리 수의 곱셈과 나눗셈을 할 수 있습니다.',
+  },
+  {
+    id: '9',
+    grade: 5,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 1,
+    unitName: '약수와 배수',
+    description: '약수와 배수의 개념을 이해하고 활용할 수 있습니다.',
+  },
+  {
+    id: '10',
+    grade: 5,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 2,
+    unitName: '분수의 덧셈과 뺄셈',
+    description: '이분모 분수의 덧셈과 뺄셈을 할 수 있습니다.',
+  },
+  {
+    id: '11',
+    grade: 6,
+    semester: 1,
+    category: '수와 연산',
+    unitNumber: 1,
+    unitName: '분수의 나눗셈',
+    description: '분수의 나눗셈을 이해하고 계산할 수 있습니다.',
+  },
+  {
+    id: '12',
+    grade: 6,
+    semester: 1,
+    category: '변화와 관계',
+    unitNumber: 2,
+    unitName: '비와 비율',
+    description: '비와 비율의 개념을 이해하고 활용할 수 있습니다.',
   },
 ];
 
