@@ -4,7 +4,7 @@ import { apiClient } from '../api/client';
 import { Concept } from '../types';
 
 export default function ConceptLearning() {
-  const { unitId, conceptId } = useParams();
+  const { conceptId } = useParams();
   const [concept, setConcept] = useState<Concept | null>(null);
   const [loading, setLoading] = useState(true);
 
