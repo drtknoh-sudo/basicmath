@@ -1,0 +1,23 @@
+{
+  "name": "elementary-math-app",
+  "version": "1.0.0",
+  "description": "초등학생 수학 학습 웹앱",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspaces",
+    "install:all": "npm install --workspaces"
+  },
+  "keywords": ["math", "education", "elementary", "learning"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

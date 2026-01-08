@@ -1,0 +1,202 @@
+// Prisma schema for Elementary Math Learning App
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 사용자 (학생)
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  name      String
+  grade     Int      // 1-6학년
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  learningRecords   LearningRecord[]
+  problemAttempts   ProblemAttempt[]
+  wrongAnswerNotes  WrongAnswerNote[]
+  achievements      Achievement[]
+  goals             Goal[]
+
+  @@map("users")
+}
+
+// 단원
+model Unit {
+  id          String   @id @default(uuid())
+  grade       Int      // 1-6
+  semester    Int      // 1-2
+  category    String   // 수와 연산, 변화와 관계, 도형과 측정, 자료와 가능성
+  unitNumber  Int
+  unitName    String
+  description String   @db.Text
+  objectives  Json     // 학습 목표들
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  concepts        Concept[]
+  problems        Problem[]
+  learningRecords LearningRecord[]
+  achievements    Achievement[]
+  goals           Goal[]
+
+  @@unique([grade, semester, unitNumber])
+  @@map("units")
+}
+
+// 개념
+model Concept {
+  id            String   @id @default(uuid())
+  unitId        String
+  conceptNumber Int
+  title         String
+  explanation   String   @db.Text
+  examples      Json     // 예제들
+  visualAids    Json?    // 시각 자료들
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  unit            Unit             @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  problems        Problem[]
+  learningRecords LearningRecord[]
+
+  @@unique([unitId, conceptNumber])
+  @@map("concepts")
+}
+
+// 문제
+model Problem {
+  id                 String    @id @default(uuid())
+  unitId             String
+  conceptId          String
+  difficulty         Int       // 1-5
+  type               String    // 객관식, 단답형, 서술형
+  question           String    @db.Text
+  steps              Json      // 풀이 단계별 정보
+  answer             String
+  explanation        String    @db.Text
+  choices            Json?     // 객관식 선택지
+  verificationStatus Boolean   @default(false)
+  verifiedBy         String?
+  verifiedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  unit            Unit             @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  concept         Concept          @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+  problemAttempts ProblemAttempt[]
+
+  @@index([unitId])
+  @@index([conceptId])
+  @@index([difficulty])
+  @@map("problems")
+}
+
+// 학습 기록
+model LearningRecord {
+  id        String   @id @default(uuid())
+  userId    String
+  unitId    String
+  conceptId String
+  studiedAt DateTime @default(now())
+  duration  Int      // 학습 시간 (초)
+  completed Boolean  @default(false)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit    Unit    @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([unitId])
+  @@index([conceptId])
+  @@map("learning_records")
+}
+
+// 문제 풀이 기록
+model ProblemAttempt {
+  id            String   @id @default(uuid())
+  userId        String
+  problemId     String
+  attemptNumber Int
+  userAnswer    String
+  userSteps     Json?    // 사용자의 풀이 단계
+  isCorrect     Boolean
+  wrongStep     Int?     // 틀린 단계 번호
+  timeSpent     Int      // 소요 시간 (초)
+  attemptedAt   DateTime @default(now())
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem          Problem           @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  wrongAnswerNotes WrongAnswerNote[]
+
+  @@index([userId])
+  @@index([problemId])
+  @@map("problem_attempts")
+}
+
+// 오답노트
+model WrongAnswerNote {
+  id               String    @id @default(uuid())
+  userId           String
+  problemAttemptId String
+  analysis         String    @db.Text // 오답 분석
+  correctSteps     Json      // 올바른 풀이 단계
+  reviewedAt       DateTime?
+  mastered         Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemAttempt ProblemAttempt @relation(fields: [problemAttemptId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([mastered])
+  @@map("wrong_answer_notes")
+}
+
+// 성취도
+model Achievement {
+  id             String   @id @default(uuid())
+  userId         String
+  unitId         String
+  accuracy       Float    // 정확도 (%)
+  problemsSolved Int
+  averageTime    Float    // 평균 소요 시간
+  weakConcepts   Json     // 취약 개념들
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, unitId])
+  @@index([userId])
+  @@map("achievements")
+}
+
+// 학습 목표
+model Goal {
+  id          String    @id @default(uuid())
+  userId      String
+  unitId      String
+  targetScore Int
+  currentScore Int      @default(0)
+  targetDate  DateTime
+  achieved    Boolean   @default(false)
+  achievedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  unit Unit @relation(fields: [unitId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([achieved])
+  @@map("goals")
+}
