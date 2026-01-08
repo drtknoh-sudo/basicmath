@@ -15,7 +15,8 @@
     "zustand": "^5.0.2",
     "axios": "^1.7.9",
     "recharts": "^2.15.0",
-    "date-fns": "^4.1.0"
+    "date-fns": "^4.1.0",
+    "@anthropic-ai/sdk": "^0.32.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",

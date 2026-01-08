@@ -11,32 +11,40 @@ export default function Dashboard() {
           2022 개정 교육과정을 반영한 초등학생 수학 학습 플랫폼입니다.
           학년별, 단원별로 체계적인 학습을 시작하세요.
         </p>
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <p className="text-sm text-blue-800">
-            <strong>데모 버전:</strong> 이 버전은 프론트엔드만 배포된 데모입니다.
-            완전한 기능을 사용하려면 백엔드 서버가 필요합니다.
-          </p>
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start">
+            <svg className="w-6 h-6 text-green-600 mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+            </svg>
+            <div>
+              <p className="text-sm font-semibold text-gray-900 mb-1">AI 에이전트 모드로 운영됩니다</p>
+              <p className="text-sm text-gray-700">
+                각 학년과 단원마다 전담 AI 선생님이 배정되어 실시간으로 개념을 설명하고 문제를 생성합니다.
+                백엔드 서버 없이도 완전한 학습이 가능합니다.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="bg-white shadow rounded-lg p-6 mb-8">
-        <h2 className="text-xl font-medium text-gray-900 mb-4">주요 기능</h2>
+        <h2 className="text-xl font-medium text-gray-900 mb-4">AI 에이전트 주요 기능</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-2">📚 학년별/단원별 학습</h3>
-            <p className="text-sm text-gray-600">1-6학년 전 학년 교육과정 지원</p>
+          <div className="border border-green-200 rounded-lg p-4 bg-green-50">
+            <h3 className="font-semibold text-gray-900 mb-2">🤖 전담 AI 선생님</h3>
+            <p className="text-sm text-gray-600">각 단원마다 특화된 AI 선생님이 배정되어 맞춤형 학습 제공</p>
           </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-2">💡 개념 학습</h3>
-            <p className="text-sm text-gray-600">핵심 개념과 예제 문제 제공</p>
+          <div className="border border-blue-200 rounded-lg p-4 bg-blue-50">
+            <h3 className="font-semibold text-gray-900 mb-2">💡 실시간 개념 생성</h3>
+            <p className="text-sm text-gray-600">학생 수준에 맞춘 개념 설명과 예제를 즉시 생성</p>
           </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-2">✏️ 문제 풀이</h3>
-            <p className="text-sm text-gray-600">난이도별 다양한 유형의 문제</p>
+          <div className="border border-purple-200 rounded-lg p-4 bg-purple-50">
+            <h3 className="font-semibold text-gray-900 mb-2">✏️ AI 문제 출제</h3>
+            <p className="text-sm text-gray-600">난이도별 맞춤형 문제를 무한정 생성 및 채점</p>
           </div>
-          <div className="border border-gray-200 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-2">📊 성취도 분석</h3>
-            <p className="text-sm text-gray-600">학습 진도와 취약점 분석</p>
+          <div className="border border-yellow-200 rounded-lg p-4 bg-yellow-50">
+            <h3 className="font-semibold text-gray-900 mb-2">💬 대화형 질문응답</h3>
+            <p className="text-sm text-gray-600">궁금한 점을 AI 선생님에게 자유롭게 질문</p>
           </div>
         </div>
       </div>

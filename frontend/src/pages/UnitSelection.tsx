@@ -1,127 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { getAllUnits } from '../services/aiAgent';
 
-// 샘플 단원 데이터 (백엔드 연결 시 API에서 로드됨)
-const SAMPLE_UNITS = [
-  {
-    id: '1',
-    grade: 1,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '9까지의 수',
-    description: '1부터 9까지의 수를 세고 읽고 쓸 수 있습니다.',
-  },
-  {
-    id: '2',
-    grade: 1,
-    semester: 1,
-    category: '도형과 측정',
-    unitNumber: 2,
-    unitName: '여러 가지 모양',
-    description: '여러 가지 물건의 모양을 관찰하고 분류할 수 있습니다.',
-  },
-  {
-    id: '3',
-    grade: 2,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '세 자리 수',
-    description: '세 자리 수를 이해하고 읽고 쓸 수 있습니다.',
-  },
-  {
-    id: '4',
-    grade: 2,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 2,
-    unitName: '덧셈과 뺄셈',
-    description: '두 자리 수의 덧셈과 뺄셈을 할 수 있습니다.',
-  },
-  {
-    id: '5',
-    grade: 3,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '덧셈과 뺄셈',
-    description: '세 자리 수의 덧셈과 뺄셈을 할 수 있습니다.',
-  },
-  {
-    id: '6',
-    grade: 3,
-    semester: 1,
-    category: '도형과 측정',
-    unitNumber: 2,
-    unitName: '평면도형',
-    description: '여러 가지 평면도형의 특징을 이해할 수 있습니다.',
-  },
-  {
-    id: '7',
-    grade: 4,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '큰 수',
-    description: '다섯 자리 이상의 큰 수를 이해하고 활용할 수 있습니다.',
-  },
-  {
-    id: '8',
-    grade: 4,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 2,
-    unitName: '곱셈과 나눗셈',
-    description: '세 자리 수의 곱셈과 나눗셈을 할 수 있습니다.',
-  },
-  {
-    id: '9',
-    grade: 5,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '약수와 배수',
-    description: '약수와 배수의 개념을 이해하고 활용할 수 있습니다.',
-  },
-  {
-    id: '10',
-    grade: 5,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 2,
-    unitName: '분수의 덧셈과 뺄셈',
-    description: '이분모 분수의 덧셈과 뺄셈을 할 수 있습니다.',
-  },
-  {
-    id: '11',
-    grade: 6,
-    semester: 1,
-    category: '수와 연산',
-    unitNumber: 1,
-    unitName: '분수의 나눗셈',
-    description: '분수의 나눗셈을 이해하고 계산할 수 있습니다.',
-  },
-  {
-    id: '12',
-    grade: 6,
-    semester: 1,
-    category: '변화와 관계',
-    unitNumber: 2,
-    unitName: '비와 비율',
-    description: '비와 비율의 개념을 이해하고 활용할 수 있습니다.',
-  },
-];
+interface Unit {
+  id: string;
+  grade: number;
+  semester: number;
+  category: string;
+  unitNumber: number;
+  unitName: string;
+  description: string;
+}
 
 export default function UnitSelection() {
+  const [units, setUnits] = useState<Unit[]>([]);
   const [selectedGrade, setSelectedGrade] = useState<number>(0);
   const [selectedSemester, setSelectedSemester] = useState<number>(0);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
 
   const categories = ['수와 연산', '변화와 관계', '도형과 측정', '자료와 가능성'];
 
+  useEffect(() => {
+    // AI 에이전트로부터 모든 단원 정보 가져오기
+    const allUnits = getAllUnits();
+    setUnits(allUnits);
+  }, []);
+
   // 필터링된 단원
-  const filteredUnits = SAMPLE_UNITS.filter((unit) => {
+  const filteredUnits = units.filter((unit) => {
     if (selectedGrade > 0 && unit.grade !== selectedGrade) return false;
     if (selectedSemester > 0 && unit.semester !== selectedSemester) return false;
     if (selectedCategory && unit.category !== selectedCategory) return false;
@@ -132,10 +38,10 @@ export default function UnitSelection() {
     <div className="px-4 py-6">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">학습할 단원 선택</h1>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-        <p className="text-sm text-blue-800">
-          <strong>데모 버전:</strong> 현재 샘플 단원만 표시됩니다.
-          백엔드 연결 시 전체 단원이 표시됩니다.
+      <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <p className="text-sm text-green-800">
+          <strong>AI 에이전트 모드:</strong> 각 단원마다 전담 AI 선생님이 개념을 설명하고 문제를 출제합니다.
+          백엔드 서버 없이 실시간으로 맞춤형 학습 콘텐츠가 생성됩니다.
         </p>
       </div>
 
@@ -190,7 +96,7 @@ export default function UnitSelection() {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {filteredUnits.map((unit) => (
-          <div key={unit.id} className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+          <div key={unit.id} className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition-shadow border-l-4 border-green-500">
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded">
@@ -203,19 +109,25 @@ export default function UnitSelection() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {unit.unitNumber}. {unit.unitName}
               </h3>
-              <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+              <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                 {unit.description}
               </p>
+              <div className="flex items-center mb-4 text-xs text-green-600">
+                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" />
+                </svg>
+                AI 선생님 배정됨
+              </div>
               <div className="flex space-x-2">
                 <Link
-                  to={`/units/${unit.id}/concepts/${unit.id}`}
-                  className="flex-1 text-center px-4 py-2 border border-primary-600 rounded-md text-sm font-medium text-primary-600 hover:bg-primary-50"
+                  to={`/concepts/${unit.grade}/${unit.id}`}
+                  className="flex-1 text-center px-4 py-2 border border-primary-600 rounded-md text-sm font-medium text-primary-600 hover:bg-primary-50 transition-colors"
                 >
                   개념 학습
                 </Link>
                 <Link
-                  to={`/problems/${unit.id}`}
-                  className="flex-1 text-center px-4 py-2 bg-primary-600 rounded-md text-sm font-medium text-white hover:bg-primary-700"
+                  to={`/problems/${unit.grade}/${unit.id}`}
+                  className="flex-1 text-center px-4 py-2 bg-primary-600 rounded-md text-sm font-medium text-white hover:bg-primary-700 transition-colors"
                 >
                   문제 풀기
                 </Link>

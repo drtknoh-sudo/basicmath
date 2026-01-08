@@ -2,8 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import UnitSelection from './pages/UnitSelection';
-import ConceptLearning from './pages/ConceptLearning';
-import ProblemSolving from './pages/ProblemSolving';
+import AIConceptLearning from './pages/AIConceptLearning';
+import AIProblemSolving from './pages/AIProblemSolving';
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="units" element={<UnitSelection />} />
-          <Route path="units/:unitId/concepts/:conceptId" element={<ConceptLearning />} />
-          <Route path="problems/:unitId" element={<ProblemSolving />} />
+          <Route path="concepts/:grade/:unitId" element={<AIConceptLearning />} />
+          <Route path="problems/:grade/:unitId" element={<AIProblemSolving />} />
         </Route>
       </Routes>
     </Router>
